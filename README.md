@@ -15,5 +15,15 @@ Data lives in memory for the duration of the Python process / REPL session. Not 
 
 For library use: expose `RAW_SERIES` and `FEATURE_SETS` via a `DataManager` singleton or return them from `load_universe()` for clean dependency injection.
 
+**demo**
+
+list(RAW_SERIES.keys())
+RAW_SERIES["BNP"].bars[0]
+FEATURE_SETS["BNP"].ret_1d[:5]
+FEATURE_SETS["BNP"].sma_20[:5]
+FEATURE_SETS["BNP"].__dict__.keys()
+len(RAW_SERIES["BNP"].bars)
+len(RAW_SERIES)
+len(FEATURE_SETS)
 
 # AmQuant
