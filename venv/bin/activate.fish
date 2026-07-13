@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/rayounouna/Desktop/quant-data-engine-py.tar./quant-data-engine-py/venv
+set -gx VIRTUAL_ENV /home/rayounouna/Desktop/Quant/DataEngine/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

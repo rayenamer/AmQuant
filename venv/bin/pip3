@@ -1,4 +1,4 @@
-#!/home/rayounouna/Desktop/quant-data-engine-py.tar./quant-data-engine-py/venv/bin/python3
+#!/home/rayounouna/Desktop/Quant/DataEngine/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -2,11 +2,13 @@ from __future__ import annotations
 import sys
 import time
 
-from qde.universe_data import UNIVERSE
-from qde.manual_data import MANUAL_SERIES
-from qde.yahoo_finance import YahooFinanceClient
-from qde.features import compute_features, FeatureSet
-from qde.bar import Series
+from amquant.universe_data import UNIVERSE
+from amquant.manual_data import MANUAL_SERIES
+from amquant.yahoo_finance import YahooFinanceClient
+from amquant.features import compute_features, FeatureSet
+from amquant.bar import Series
+
+
 
 RAW_SERIES: dict[str, Series] = {}
 FEATURE_SETS: dict[str, FeatureSet] = {}

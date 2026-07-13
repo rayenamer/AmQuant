@@ -27,3 +27,16 @@ len(RAW_SERIES)
 len(FEATURE_SETS)
 
 # AmQuant
+
+
+
+**l**
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+
+python -m pip install --upgrade pip
+python -m pip install build twine
+python -m build
+
+

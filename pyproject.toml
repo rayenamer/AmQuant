@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amquant"
+version = "0.1.0"
+description = "A lightweight library for loading market data and computing engineered features."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Your Name", email = "you@example.com" }]
+keywords = ["quant", "finance", "market-data", "features", "trading"]
+dependencies = [
+    "requests>=2.31",
+    "pandas>=2.0",
+]
+
+[tool.setuptools]
+packages = ["amquant"]
