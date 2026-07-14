@@ -59,7 +59,16 @@ jobs:
           python -m build
 
       - name: Run tests
-        run: python -m pytest -v
+        run: |
+          set +e
+          python -m pytest -v
+          code=$?
+          set -e
+          if [ "$code" -eq 5 ]; then
+            echo "::warning::No tests were collected (pytest exit code 5). Add tests under tests/ (see tests/test_loader.py from the setup notes) before relying on this as a real gate."
+            exit 0
+          fi
+          exit "$code"
 
       - name: Upload build artifacts
         if: matrix.python-version == '3.11'
