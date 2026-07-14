@@ -113,7 +113,7 @@ pip install -e ".[dev]"
 
 ### 4. Write some good code (please keep the AI slop away)
 
-# $$
+# The Vision Behind AMQuant
 
 AMQuant is designed as the data-engineering foundation of a quantitative research stack.
 
