@@ -80,6 +80,39 @@ aapl_features = amquant.FEATURE_SETS["AAPL"]
 
 
 
+# Contributing & Collaboration
+
+AMQuant is an open-source project and welcomes contributions from developers, quantitative researchers, and Python enthusiasts.
+
+## Getting Started
+
+### 1. Fork the repository
+
+Create your own fork of the AMQuant repository, then clone it locally:
+
+```bash
+git clone https://github.com/rayenamer/AmQuant
+cd amquant
+```
+
+### 2. create a virtual environment
+
+```bash
+python3 -m venv venv
+
+source venv/bin/activate
+```
+
+### 3. install development dependencies
+
+```bash
+python -m pip install --upgrade pip
+
+pip install -e ".[dev]"
+```
+
+### 4. Write some good code (please keep the AI slop away)
+
 # $$
 
 AMQuant is designed as the data-engineering foundation of a quantitative research stack.
