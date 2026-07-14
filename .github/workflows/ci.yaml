@@ -1,36 +1,71 @@
 name: CI
 
+# Runs on every push to any branch (so a branch's build status is visible
+# before a PR exists) and on every pull request targeting main. Set this
+# job as a required status check on main's branch protection rule so PRs
+# can't merge unless it passes.
 on:
   push:
     branches:
-      - "**"
+      - '**'
   pull_request:
+    branches:
+      - main
 
+# Least-privilege by default: this workflow only reads the repo and never
+# needs write access, so nothing here can touch CODEOWNERS or anything else.
 permissions:
   contents: read
 
 jobs:
-  test:
+  build-and-test:
+    name: Build & test (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
-
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
 
-      - run: python -m pip install --upgrade pip
+      - name: Install package (editable) + dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          # Belt-and-suspenders: guarantee pytest is present even if the
+          # [dev] extra is missing/misnamed in pyproject.toml, so CI fails
+          # on a real test failure instead of a missing-tool error.
+          pip install pytest>=8.0
 
-      - run: pip install -e ".[dev]"
+      - name: Verify test tooling is on PATH
+        run: |
+          which pytest
+          pytest --version
 
-      - run: pip install build
+      - name: Compile check (syntax / import sanity across the whole tree)
+        run: python -m compileall -q amquant
 
-      - run: python -m build
+      - name: Build sdist + wheel (fails the job if packaging is broken)
+        run: |
+          python -m pip install --upgrade build
+          python -m build
 
-      - run: pytest -v
+      - name: Run tests
+        run: python -m pytest -v
+
+      - name: Upload build artifacts
+        if: matrix.python-version == '3.11'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7
 
