@@ -1,42 +1,86 @@
-**activate the virtual env with** :  source venv/bin/activate   
+# AMQuant - Quick Start Guide
 
-**interactive program** :python3 -i main.py
+## Overview
 
-**DATA ACCESS:**
+**AMQuant** is an open-source Python library for quantitative finance that provides:
 
-After `main()` executes in the same Python session:
+* Market data loading
+* OHLCV time series management
+* Feature engineering
+* A clean Python API for research, backtesting and quantitative analysis
 
-- `RAW_SERIES: dict[str, Series]` — populated with fully enriched `Series` objects (OHLCV + metadata).
-- `FEATURE_SETS: dict[str, FeatureSet]` — contains computed technical features per symbol.
+Unlike the original script-based implementation, AMQuant is now a fully installable Python package available through PyPI.
 
-Both dicts are module-level globals, accessible immediately post-run via `RAW_SERIES['BIAT']` or `FEATURE_SETS['MC']`.
+---
 
-Data lives in memory for the duration of the Python process / REPL session. Not persisted to disk unless explicitly saved.
+# 1. Create a Python Virtual Environment
 
-For library use: expose `RAW_SERIES` and `FEATURE_SETS` via a `DataManager` singleton or return them from `load_universe()` for clean dependency injection.
+It is recommended to work inside a virtual environment.
 
-**demo**
+### Linux / macOS
 
-list(RAW_SERIES.keys())
-RAW_SERIES["BNP"].bars[0]
-FEATURE_SETS["BNP"].ret_1d[:5]
-FEATURE_SETS["BNP"].sma_20[:5]
-FEATURE_SETS["BNP"].__dict__.keys()
-len(RAW_SERIES["BNP"].bars)
-len(RAW_SERIES)
-len(FEATURE_SETS)
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-# AmQuant
+### Windows
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+---
+
+# 2. Install AMQuant
+
+From PyPI
+
+```bash
+pip install amquant
+```
+# 3. Usage Example
+
+```python
+import amquant
+
+# Load market data
+result = amquant.load_market_data()
+
+# Loading summary
+print(f"Loaded : {result.ok}")
+print(f"Failed : {result.failed}")
+print(f"Skipped: {result.skipped}")
+
+# Access raw market data
+aapl_series = result.raw_series["AAPL"]
+
+# Access engineered features
+aapl_features = result.feature_sets["AAPL"]
+
+# Alternatively, if update_globals=True (default)
+aapl_series = amquant.RAW_SERIES["AAPL"]
+aapl_features = amquant.FEATURE_SETS["AAPL"]
+```
+
+## Returned Object
+
+`load_market_data()` returns a `LoadResult` dataclass containing both the loaded data and execution statistics.
+
+| Attribute | Description |
+|-----------|-------------|
+| `result.raw_series` | Dictionary mapping `Symbol → Series` for successfully loaded instruments. |
+| `result.feature_sets` | Dictionary mapping `Symbol → FeatureSet` containing the engineered features. |
+| `result.ok` | Number of instruments successfully loaded and featurized. |
+| `result.failed` | Number of instruments that failed during loading or feature computation. |
+| `result.skipped` | Number of skipped instruments (missing or unavailable data). |
+
+> **Note:** By default (`update_globals=True`), the loaded data is also mirrored into `amquant.RAW_SERIES` and `amquant.FEATURE_SETS` for interactive exploration in a Python REPL or Jupyter notebook. For production code, using `result.raw_series` and `result.feature_sets` is recommended.
 
 
 
-**l**
-rm -rf venv
-python3 -m venv venv
-source venv/bin/activate
+# $$
 
-python -m pip install --upgrade pip
-python -m pip install build twine
-python -m build
-
+AMQuant is designed as the data-engineering foundation of a quantitative research stack.
 
