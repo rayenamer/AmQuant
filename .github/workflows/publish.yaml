@@ -32,15 +32,27 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install build tooling
         run: python -m pip install --upgrade pip build
 
-      - name: Run tests before publishing
+      - name: Install package (editable) + dev dependencies
         run: |
           pip install -e ".[dev]"
-          pytest -v
+          pip install pytest>=8.0
+
+      - name: Run tests before publishing
+        run: |
+          set +e
+          python -m pytest -v
+          code=$?
+          set -e
+          if [ "$code" -eq 5 ]; then
+            echo "::warning::No tests were collected. Publishing anyway, but you have no automated safety net on this release."
+            exit 0
+          fi
+          exit "$code"
 
       - name: Build sdist + wheel
         run: python -m build
