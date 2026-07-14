@@ -18,3 +18,5 @@ dependencies = [
 
 [tool.setuptools]
 packages = ["amquant"]
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
