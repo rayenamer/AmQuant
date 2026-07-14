@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "amquant"
-version = "0.1.0"
+version = "0.1.1"
 description = "A lightweight library for loading market data and computing engineered features."
 readme = "README.md"
 requires-python = ">=3.10"
