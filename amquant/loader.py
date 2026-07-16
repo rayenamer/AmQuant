@@ -4,10 +4,10 @@ import time
 import datetime as dt
 from dataclasses import dataclass, field
 
-from amquant.dataSources.universe_data import UNIVERSE
+from amquant.dataDefinitions.universe_data import UNIVERSE
 from amquant.dataSources.yahoo_finance import YahooFinanceClient, DateLike
-from amquant.dataClasses.features import compute_features, FeatureSet
-from amquant.dataClasses.bar import Series
+from amquant.dataDefinitions.features import compute_features, FeatureSet
+from amquant.dataDefinitions.bar import Series
 
 RAW_SERIES: dict[str, Series] = {}
 FEATURE_SETS: dict[str, FeatureSet] = {}

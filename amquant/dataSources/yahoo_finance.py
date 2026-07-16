@@ -11,7 +11,7 @@ import sys
 import datetime as dt
 from typing import Optional, Union
 
-from amquant.dataClasses.bar import Bar, Series
+from amquant.dataDefinitions.bar import Bar, Series
 from amquant.dataInra.http_client import HttpClient
 
 _INTERVAL_MAP = {"1d": "1d", "1wk": "1wk", "1mo": "1mo"}
