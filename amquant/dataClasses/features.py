@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from amquant.bar import Series
+from amquant.dataClasses.bar import Series
 
 NaN = float("nan")
 

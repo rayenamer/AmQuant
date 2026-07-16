@@ -1,13 +1,13 @@
 from __future__ import annotations
 import sys
 import time
+import datetime as dt
 from dataclasses import dataclass, field
 
-from amquant.universe_data import UNIVERSE
-from amquant.manual_data import MANUAL_SERIES
-from amquant.yahoo_finance import YahooFinanceClient
-from amquant.features import compute_features, FeatureSet
-from amquant.bar import Series
+from amquant.dataSources.universe_data import UNIVERSE
+from amquant.dataSources.yahoo_finance import YahooFinanceClient, DateLike
+from amquant.dataClasses.features import compute_features, FeatureSet
+from amquant.dataClasses.bar import Series
 
 RAW_SERIES: dict[str, Series] = {}
 FEATURE_SETS: dict[str, FeatureSet] = {}
@@ -26,6 +26,8 @@ def load_market_data(
     universe=None,
     *,
     yahoo_client: YahooFinanceClient | None = None,
+    fromdate: DateLike | None = None,
+    todate: DateLike | None = None,
     sleep_between_calls: float = 0.3,
     verbose: bool = True,
     update_globals: bool = True,
@@ -34,9 +36,16 @@ def load_market_data(
     Fetch/assemble bar series for every instrument in `universe`, compute features,
     and return them as a LoadResult. By default also mirrors results into
     amquant.loader.RAW_SERIES / FEATURE_SETS for quick terminal inspection.
+
+    fromdate / todate default to a 1y trailing window (today - 365d .. today)
+    if not given, and are computed once here so every instrument requests the
+    exact same window through the same yahoo.download(what, fromdate, todate) call.
     """
     universe = universe if universe is not None else UNIVERSE
     yahoo = yahoo_client if yahoo_client is not None else YahooFinanceClient()
+
+    todate_ = todate if todate is not None else dt.datetime.now(dt.timezone.utc)
+    fromdate_ = fromdate if fromdate is not None else todate_ - dt.timedelta(days=365)
 
     result = LoadResult()
 
@@ -46,11 +55,10 @@ def load_market_data(
     for inst in universe:
         series = None
         if inst.source == "yahoo" and inst.yahoo_symbol:
-            series = yahoo.fetch_history(inst.yahoo_symbol, "1y", "1d")
+            series = yahoo.download(inst.yahoo_symbol, fromdate_, todate_)
             if sleep_between_calls:
                 time.sleep(sleep_between_calls)
         else:
-            series = MANUAL_SERIES.get(inst.symbol)
             if series is None and verbose:
                 print(f"[manual] {inst.symbol}: no entry in MANUAL_SERIES", file=sys.stderr)
 
