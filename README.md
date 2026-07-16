@@ -45,8 +45,13 @@ pip install amquant
 ```python
 import amquant
 
-# Load market data
-result = amquant.load_market_data()
+# Load market data for an explicit date range.
+# fromdate / todate accept "YYYY-MM-DD" strings, date/datetime objects,
+# or raw unix seconds.
+result = amquant.load_market_data(
+    fromdate="2024-01-01",
+    todate="2024-06-01",
+)
 
 # Loading summary
 print(f"Loaded : {result.ok}")
@@ -62,6 +67,21 @@ aapl_features = result.feature_sets["AAPL"]
 # Alternatively, if update_globals=True (default)
 aapl_series = amquant.RAW_SERIES["AAPL"]
 aapl_features = amquant.FEATURE_SETS["AAPL"]
+```
+
+If `fromdate` / `todate` are omitted, `load_market_data()` defaults to a trailing 1-year window (today − 365 days → today).
+
+## Downloading a Single Symbol
+
+Every instrument in the universe is fetched through the same `download(what, fromdate, todate)` call under the hood. You can use it directly if you just want one symbol without going through the full universe/feature pipeline:
+
+```python
+from amquant.yahoo_finance import YahooFinanceClient
+
+client = YahooFinanceClient()
+series = client.download("AAPL", "2024-01-01", "2024-06-01")
+
+print(series.symbol, len(series.bars))
 ```
 
 ## Returned Object
@@ -116,4 +136,3 @@ pip install -e ".[dev]"
 # The Vision Behind AMQuant
 
 AMQuant is designed as the data-engineering foundation of a quantitative research stack.
-

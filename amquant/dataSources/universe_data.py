@@ -1,23 +1,6 @@
 from __future__ import annotations
-from amquant.universe import Instrument
+from amquant.dataSources.universe import Instrument
 UNIVERSE: list[Instrument] = [
-    # ========================= TUNISIAN GROUP (manual) =========================
-    Instrument(symbol="SFBT", yahoo_symbol="", name="Societe Frigorifique et Brasserie de Tunis", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="BIAT", yahoo_symbol="", name="Banque Internationale Arabe de Tunisie", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="ATB", yahoo_symbol="", name="Arab Tunisian Bank", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="BT", yahoo_symbol="", name="Banque de Tunisie", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="BH", yahoo_symbol="", name="BH Bank", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="DELICE", yahoo_symbol="", name="Delice Holding", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="SOTUVER", yahoo_symbol="", name="Societe Tunisienne de Verreries", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="TLS", yahoo_symbol="", name="Tunisie Leasing and Factoring", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="ENNAKL", yahoo_symbol="", name="Ennakl Automobiles", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="PGH", yahoo_symbol="", name="Poulina Group Holding", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="TJARI", yahoo_symbol="", name="Banque Attijari de Tunisie", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="ARTES", yahoo_symbol="", name="ARTES Renault", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="SITEX", yahoo_symbol="", name="Societe Industrielle des Textiles", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="ASSMA", yahoo_symbol="", name="Assurances Maghrebia", country="TN", exchange="BVMT", source="manual_csv"),
-    Instrument(symbol="AB", yahoo_symbol="", name="Amen Bank", country="TN", exchange="BVMT", source="manual_csv"),
-
     # ========================= FRENCH GROUP =========================
     Instrument(symbol="MC", yahoo_symbol="MC.PA", name="LVMH", country="FR", exchange="EURONEXT_PARIS", source="yahoo"),
     Instrument(symbol="TTE", yahoo_symbol="TTE.PA", name="TotalEnergies", country="FR", exchange="EURONEXT_PARIS", source="yahoo"),
