@@ -7,8 +7,9 @@ from dataclasses import dataclass
 @dataclass
 class Instrument:
     symbol: str = ""
-    yahoo_symbol: str = ""
     name: str = ""
     country: str = ""
     exchange: str = ""
     source: str = ""   # "yahoo" or "manual_csv"
+
+    yahoo_symbol: str = ""
