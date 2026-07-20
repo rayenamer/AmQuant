@@ -1,5 +1,6 @@
 from __future__ import annotations
 import math
+import datetime as dt
 from dataclasses import dataclass, field
 from amquant.dataDefinitions.bar import Series
 
@@ -267,7 +268,11 @@ def compute_features(series: Series, benchmark: Series | None = None) -> Feature
     for i in range(20, n):
         w = f.log_ret_1d[i-19:i+1]
         mean = sum(w)/20
-        std = _rolling_std(w, 20)[i]
+        # w is a 20-item window; compute variance/std directly to avoid
+        # indexing into a short _rolling_std(...) result with the
+        # absolute index `i` (which causes IndexError).
+        var = sum((v - mean) ** 2 for v in w) / max(20 - 1, 1)
+        std = math.sqrt(var)
         if std > 0:
             skew = sum(((v - mean)/std)**3 for v in w) / 20
             kurt = sum(((v - mean)/std)**4 for v in w) / 20 - 3
@@ -302,7 +307,26 @@ def compute_features(series: Series, benchmark: Series | None = None) -> Feature
         # ... implement similarly to autocorrelation if needed
 
     # Bonus
-    f.day_of_week = [b.timestamp_utc.weekday() for b in bars]  # 0=Mon ... 6=Sun
+    # `Bar.timestamp_utc` is stored as UNIX seconds (int). Convert to
+    # timezone-aware datetime before calling `weekday()`; tolerate
+    # unexpected types by falling back to NaN.
+    f.day_of_week = []
+    for b in bars:
+        ts = getattr(b, 'timestamp_utc', None)
+        if isinstance(ts, (int, float)):
+            try:
+                d = dt.datetime.fromtimestamp(ts, dt.timezone.utc)
+                f.day_of_week.append(d.weekday())
+                continue
+            except Exception:
+                pass
+        if hasattr(ts, 'weekday'):
+            try:
+                f.day_of_week.append(ts.weekday())
+                continue
+            except Exception:
+                pass
+        f.day_of_week.append(NaN)
 
     return f
 
