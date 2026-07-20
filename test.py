@@ -1,5 +1,18 @@
-from amquant.dataSources.yahoo_finance import YahooFinanceClient
+from amquant.loader import (
+    load_market_data,
+    describe,
+    list_features,
+    feature_summary,
+    RAW_SERIES,
+    FEATURE_SETS
+)
 
-client = YahooFinanceClient()
-series = client.download("MC.PA", "2024-01-01", "2024-06-01")
-print(series.symbol, len(series.bars), series.bars[0].close if series.bars else None)
+# Usage:
+load_market_data(verbose=True)
+
+print(describe("macd_hist"))
+print(describe("bb_percent_b"))
+print(describe("vol_20"))
+
+list_features()          # returns list of all features
+feature_summary()        # prints nice overview
