@@ -67,6 +67,15 @@ aapl_features = result.feature_sets["AAPL"]
 # Alternatively, if update_globals=True (default)
 aapl_series = amquant.RAW_SERIES["AAPL"]
 aapl_features = amquant.FEATURE_SETS["AAPL"]
+
+# Get description of any feature
+print(describe("macd_hist"))
+print(describe("bb_percent_b"))
+print(describe("vol_20"))
+print(describe("rsi_14"))
+
+feature_summary()        # Nice printed overview
+print(list_features())   # All feature names
 ```
 
 If `fromdate` / `todate` are omitted, `load_market_data()` defaults to a trailing 1-year window (today − 365 days → today).
